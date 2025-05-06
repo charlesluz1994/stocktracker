@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: stocktracker-service
+  data:
+    mongodb:
+      #uri: uri-cloud
+      host: localhost
+      port: 27017
+      database: stocktracker
+    redis:
+      host: localhost
+      port: 6379
+      password: sa
+  cache:
+    redis:
+      time-to-live: 60000
+
+server:
+  port: 8080
+
+stock:
+  client:
+    brapi:
+      url: https://brapi.dev/api/quote
+      token: 9MGuepVVhLRAmNfaEzE69z
+
