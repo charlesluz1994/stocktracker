@@ -1,5 +1,6 @@
 package com.cluz.stocktracker.controller;
 
+import com.cluz.stocktracker.client.response.StockResponse;
 import com.cluz.stocktracker.controller.request.StockAddPurchaseRequest;
 import com.cluz.stocktracker.controller.request.StockRequest;
 import com.cluz.stocktracker.entity.Stock;
@@ -8,6 +9,7 @@ import com.cluz.stocktracker.mapper.StockMapper;
 import com.cluz.stocktracker.service.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,20 +26,20 @@ public class StockController {
 	private final StockService stockService;
 
 	@PostMapping
-	public ResponseEntity<Stock> savePurchase(@RequestBody StockRequest request) {
+	public ResponseEntity<StockResponse> savePurchase(@RequestBody StockRequest request) {
 		Pair<Stock, StockPurchase> stock = StockMapper.toStock(request);
 		var savedStock = stockService.savePurchase(stock.getFirst(), stock.getSecond());
 
-		return ResponseEntity.ok(savedStock);
+		return ResponseEntity.status(HttpStatus.CREATED).body(StockMapper.toStockResponse(savedStock));
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<Stock> addPurchaseStock(@RequestBody StockAddPurchaseRequest request) {
+	public ResponseEntity<StockResponse> addPurchaseStock(@RequestBody StockAddPurchaseRequest request) {
 		try {
 			var stockPurchase = StockMapper.toStockPurchase(request);
 			var savedPurchase = stockService.addPurchaseStock(request.getStockId(), stockPurchase);
 
-			return ResponseEntity.ok(savedPurchase);
+			return ResponseEntity.ok(StockMapper.toStockResponse(savedPurchase));
 		} catch (IllegalArgumentException ex) {
 			return ResponseEntity.unprocessableEntity().build();
 		}

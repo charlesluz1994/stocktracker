@@ -1,11 +1,15 @@
 package com.cluz.stocktracker.mapper;
 
+import com.cluz.stocktracker.client.response.StockResponse;
 import com.cluz.stocktracker.controller.request.StockAddPurchaseRequest;
 import com.cluz.stocktracker.controller.request.StockRequest;
 import com.cluz.stocktracker.entity.Stock;
 import com.cluz.stocktracker.entity.StockPurchase;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.util.Pair;
+
+import java.math.BigDecimal;
+import java.util.Objects;
 
 @UtilityClass
 public class StockMapper {
@@ -30,6 +34,20 @@ public class StockMapper {
 				.purchaseDate(request.getDate())
 				.price(request.getPrice())
 				.quantity(request.getQuantity())
+				.build();
+	}
+
+	public static StockResponse toStockResponse(Stock stock) {
+		final Long quantity = stock.getPurchases().stream().map(StockPurchase::getQuantity).reduce(0L,Long::sum);
+
+		BigDecimal price = stock.getPurchases().get(0).getPrice();
+
+		return StockResponse.builder()
+				.id(stock.getId())
+				.stock(stock.getStock())
+				.price(price)
+				.quantity(quantity)
+				.priceTotal(Objects.nonNull(price) ? price.multiply(BigDecimal.valueOf(quantity)):BigDecimal.ZERO)
 				.build();
 	}
 }

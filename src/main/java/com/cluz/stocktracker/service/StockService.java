@@ -1,8 +1,10 @@
 package com.cluz.stocktracker.service;
 
 import com.cluz.stocktracker.client.response.BrapiStockDataResponse;
+import com.cluz.stocktracker.config.SecurityContextData;
 import com.cluz.stocktracker.entity.Stock;
 import com.cluz.stocktracker.entity.StockPurchase;
+import com.cluz.stocktracker.entity.User;
 import com.cluz.stocktracker.repository.StockPurchaseRepository;
 import com.cluz.stocktracker.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class StockService {
 
 	public Stock savePurchase(Stock stock, StockPurchase stockPurchase) {
 		var savedStockPurchase = stockPurchaseRepository.save(stockPurchase);
+		stock.setUser(User.builder().id(SecurityContextData.getUserData().getUserId()).build());
 		stock.setPurchases(List.of(savedStockPurchase));
 		return stockRepository.save(stock);
 	}
