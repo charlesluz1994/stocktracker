@@ -24,3 +24,5 @@ stock:
       url: https://brapi.dev/api/quote
       token: 9MGuepVVhLRAmNfaEzE69z
 
+security:
+  securityLoginKey: 'secret-key'
