@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ public class StockController {
 	private final StockService stockService;
 
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<StockResponse> savePurchase(@RequestBody StockRequest request) {
 		Pair<Stock, StockPurchase> stock = StockMapper.toStock(request);
 		var savedStock = stockService.savePurchase(stock.getFirst(), stock.getSecond());
@@ -34,6 +36,7 @@ public class StockController {
 	}
 
 	@PostMapping("/add")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<StockResponse> addPurchaseStock(@RequestBody StockAddPurchaseRequest request) {
 		try {
 			var stockPurchase = StockMapper.toStockPurchase(request);
@@ -46,6 +49,7 @@ public class StockController {
 	}
 
 	@GetMapping("/all")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<List<Stock>> findAllStock() {
 		return ResponseEntity.ok(stockService.findAllStock());
 	}
