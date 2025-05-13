@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: stocktracker-service
@@ -15,8 +18,11 @@ spring:
     redis:
       time-to-live: 60000
 
-server:
-  port: 8080
+springdoc:
+  api-docs:
+    path: /api/api-docs
+  swagger-ui:
+    path: /swagger/index.html
 
 stock:
   client:

@@ -7,6 +7,8 @@ import com.cluz.stocktracker.entity.Stock;
 import com.cluz.stocktracker.entity.StockPurchase;
 import com.cluz.stocktracker.mapper.StockMapper;
 import com.cluz.stocktracker.service.StockService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,7 @@ import java.util.List;
 public class StockController {
 	private final StockService stockService;
 
+	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<StockResponse> savePurchase(@RequestBody StockRequest request) {
@@ -35,6 +38,7 @@ public class StockController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(StockMapper.toStockResponse(savedStock));
 	}
 
+	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
 	@PostMapping("/add")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<StockResponse> addPurchaseStock(@RequestBody StockAddPurchaseRequest request) {
@@ -48,6 +52,7 @@ public class StockController {
 		}
 	}
 
+	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
 	@GetMapping("/all")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<List<Stock>> findAllStock() {

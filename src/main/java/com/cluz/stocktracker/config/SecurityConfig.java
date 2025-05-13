@@ -16,8 +16,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
 	private final SecurityFilter securityFilter;
@@ -27,7 +27,7 @@ public class SecurityConfig {
 		return http.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/stock/user/login").permitAll()
+						.requestMatchers("/stock/auth/login").permitAll()
 						.requestMatchers("/stock/register").permitAll()
 						.requestMatchers("/api/api-docs/**").permitAll()
 						.requestMatchers("/swagger/**").permitAll()
