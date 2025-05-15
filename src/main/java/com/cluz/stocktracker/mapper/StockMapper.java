@@ -1,5 +1,6 @@
 package com.cluz.stocktracker.mapper;
 
+import com.cluz.stocktracker.controller.response.StockPurchaseResponse;
 import com.cluz.stocktracker.client.response.StockResponse;
 import com.cluz.stocktracker.controller.request.StockAddPurchaseRequest;
 import com.cluz.stocktracker.controller.request.StockRequest;
@@ -31,6 +32,7 @@ public class StockMapper {
 
 	public static StockPurchase toStockPurchase(StockAddPurchaseRequest request) {
 		return StockPurchase.builder()
+				.id(request.getStockId())
 				.purchaseDate(request.getDate())
 				.price(request.getPrice())
 				.quantity(request.getQuantity())
@@ -48,6 +50,15 @@ public class StockMapper {
 				.price(price)
 				.quantity(quantity)
 				.priceTotal(Objects.nonNull(price) ? price.multiply(BigDecimal.valueOf(quantity)):BigDecimal.ZERO)
+				.build();
+	}
+
+	public static StockPurchaseResponse toStockDetailResponse(StockPurchase stockPurchase){
+		return StockPurchaseResponse.builder()
+				.date(stockPurchase.getPurchaseDate())
+				.quantity(stockPurchase.getQuantity())
+				.price(stockPurchase.getPrice())
+				.priceTotal(stockPurchase.getPrice().multiply(BigDecimal.valueOf(stockPurchase.getQuantity())))
 				.build();
 	}
 }

@@ -40,3 +40,9 @@ This endpoint inserts a new purchase in a registered stock based on the provided
 Website used to get stock information:
 https://brapi.dev/
 https://brapi.dev/api/quote/ITUB4?token=
+
+Check the API Generator here: https://editor.swagger.io/
+
+Swagger: http://localhost:8080/swagger/swagger-ui/index.html#/
+
+API docs: http://localhost:8080/api/api-docs

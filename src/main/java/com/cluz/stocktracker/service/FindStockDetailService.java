@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -23,9 +24,16 @@ public class FindStockDetailService {
 
 	@Cacheable(value = "stocks", key = "#stock")
 	public Optional<BrapiStockDataResponse> getBrapiStockDetail(String stock) {
-		log.info("Consulting stock information: {} on Brapi", stock);
-		BrapiStockResponse brapiStockResponse = brapiClient.getStock(stock, token);
-		log.info("Return from Brapi of stock {} : {}", stock, brapiStockResponse.getResults().get(0));
-		return Optional.of(brapiStockResponse.getResults().get(0));
+		try {
+			log.info("Consulting stock information: {} on Brapi", stock);
+			BrapiStockResponse brapiStockResponse = brapiClient.getStock(stock, token);
+			log.info("Return from Brapi of stock {} : {}", stock, brapiStockResponse.getResults().get(0));
+			return Optional.of(brapiStockResponse.getResults().get(0));
+		} catch (RedisConnectionFailureException ex) {
+			log.warn("Redis is unavailable, skipping cache for stock: {}", stock);
+			// fallback without cache
+			BrapiStockResponse fallbackResponse = brapiClient.getStock(stock, token);
+			return Optional.of(fallbackResponse.getResults().get(0));
+		}
 	}
 }

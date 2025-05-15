@@ -53,7 +53,7 @@ public class StockController {
 	}
 
 	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
-	@GetMapping("/all")
+	@GetMapping
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<List<Stock>> findAllStock() {
 		return ResponseEntity.ok(stockService.findAllStock());
