@@ -28,7 +28,7 @@ import java.util.List;
 public class StockController {
 	private final StockService stockService;
 
-	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
+	@Operation(summary = "Save a new stock",security = @SecurityRequirement(name = "bearerAuth"))
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<StockResponse> savePurchase(@RequestBody StockRequest request) {
@@ -38,7 +38,7 @@ public class StockController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(StockMapper.toStockResponse(savedStock));
 	}
 
-	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
+	@Operation(summary = "Add new purchase to stock already existent",security = @SecurityRequirement(name = "bearerAuth"))
 	@PostMapping("/add")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<StockResponse> addPurchaseStock(@RequestBody StockAddPurchaseRequest request) {
@@ -52,7 +52,7 @@ public class StockController {
 		}
 	}
 
-	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
+	@Operation(summary = "Get stocks by user",security = @SecurityRequirement(name = "bearerAuth"))
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<List<Stock>> findAllStock() {

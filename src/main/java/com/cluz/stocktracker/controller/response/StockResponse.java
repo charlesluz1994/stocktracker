@@ -4,14 +4,14 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Builder
 @Data
 public class StockResponse {
 
+	private String id;
+	private String stock;
 	private long quantity;
-	private LocalDate date;
 	private BigDecimal price;
-
+	private BigDecimal priceTotal;
 }

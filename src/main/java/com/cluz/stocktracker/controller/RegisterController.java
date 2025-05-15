@@ -3,6 +3,7 @@ package com.cluz.stocktracker.controller;
 import com.cluz.stocktracker.controller.request.UserRegisterRequest;
 import com.cluz.stocktracker.mapper.UserMapper;
 import com.cluz.stocktracker.service.RegisterService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class RegisterController {
 
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
+	@Operation(summary = "Add user to application")
 	public ResponseEntity<Void> addUser(@RequestHeader(value = "isAdmin", required = false) boolean isAdmin,
 										@RequestBody UserRegisterRequest request) {
 		var user = UserMapper.toUser(request);

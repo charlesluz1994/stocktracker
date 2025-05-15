@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class StockPurchaseResponse {
 
 	private LocalDate date;
-	private Long quantity;
+	private long quantity;
 	private BigDecimal price;
 	private BigDecimal priceTotal;
 }

@@ -5,6 +5,7 @@ import com.cluz.stocktracker.controller.response.AuthResponse;
 import com.cluz.stocktracker.entity.User;
 import com.cluz.stocktracker.service.AuthService;
 import com.cluz.stocktracker.service.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +27,7 @@ public class AuthController {
 	private final TokenService tokenService;
 
 	@PostMapping("/login")
+	@Operation(summary = "Application login with credentials")
 	public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
 		UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(request.username(), request.password());
 		Authentication authenticate = authenticationManager.authenticate(userAndPass);
